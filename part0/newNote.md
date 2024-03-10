@@ -3,6 +3,15 @@ sequenceDiagram
     participant browser
     participant server
 
+    Note right of browser: The browser sends the form with the new note information after clicking the save button
+    browser->>server: POST https://fullstack-exampleapp.herokuapp.com/new_note
+
+    
+    activate server
+    server-->>browser: Ask browser to do new HTTP GET request to the address defined in the header's Location - the address notes
+    deactivate server
+    Note right of browser: browser reloads the Notes page. The reload causes three more HTTP requests: fetching main.css, main.js, and data.json.
+
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/notes
     activate server
     server-->>browser: HTML document
@@ -22,8 +31,7 @@ sequenceDiagram
 
     browser->>server: GET https://studies.cs.helsinki.fi/exampleapp/data.json
     activate server
-    server-->>browser: [{ "content": "HTML is easy", "date": "2023-1-1" }, ... ]
+    server-->>browser: notes JSON data
     deactivate server
 
     Note right of browser: The browser executes the callback function that renders the notes
-    ```

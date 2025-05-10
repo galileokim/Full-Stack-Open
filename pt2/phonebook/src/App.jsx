@@ -2,11 +2,13 @@ import { useState, useEffect } from 'react'
 import PersonForm from './PersonForm'
 import Persons from './Persons'
 import peopleServices from './services/people'
+import Notification from './Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [updateMessage, setUpdateMessage] = useState(null)
 
   useEffect(() => {peopleServices.getAll().then(initialPeople => setPersons(initialPeople))}, [])
 
@@ -32,6 +34,11 @@ const App = () => {
       setPersons(persons.concat(newPerson))
       setNewName('')
       setNewNumber('')
+    }).then(() => {
+      setUpdateMessage(`${personObject.name} was added to the phonebook`)
+      setTimeout(() => {
+        setUpdateMessage(null)
+      }, 5000)
     })
   }
 
@@ -50,6 +57,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={updateMessage} />
       <PersonForm addPerson={addPerson} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
       <h2>Numbers</h2>
       <Persons persons={persons} deletePerson={deletePerson} />

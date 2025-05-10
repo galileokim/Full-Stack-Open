@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import PersonForm from './PersonForm'
 import Persons from './Persons'
+import peopleServices from './services/people'
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+
+  useEffect(() => {peopleServices.getAll().then(initialPeople => setPersons(initialPeople))}, [])
 
   const nameChange = (event) => setNewName(event.target.value)
 
@@ -27,9 +28,23 @@ const App = () => {
       number: newNumber
     }
     
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
+    peopleServices.create(personObject).then(newPerson => {
+      setPersons(persons.concat(newPerson))
+      setNewName('')
+      setNewNumber('')
+    })
+  }
+
+  const deletePerson = (id) => {
+    const person = persons.find(p => p.id === id)
+    if (window.confirm(`do you want to delete ${person.name}?`)) {
+      peopleServices
+        .remove(id)
+        .then(person => {
+          const newPeople = persons.filter((p) => p.id !== person.id)
+          setPersons(newPeople)
+        })
+    }
   }
 
   return (
@@ -37,7 +52,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <PersonForm addPerson={addPerson} newName={newName} nameChange={nameChange} newNumber={newNumber} numberChange={numberChange} />
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} deletePerson={deletePerson} />
     </div>
   )
 }

@@ -1,29 +1,22 @@
-{
-  "persons": [
-    {
-      "name": "Arto Hellas",
-      "number": "040-123456",
-      "id": "1"
+[
+    { 
+      "id": "1",
+      "name": "Arto Hellas", 
+      "number": "040-123456"
     },
-    {
-      "name": "Ada Lovelace",
-      "number": "39-44-5323523",
-      "id": "2"
+    { 
+      "id": "2",
+      "name": "Ada Lovelace", 
+      "number": "39-44-5323523"
     },
-    {
-      "id": "4dea",
-      "name": "Bob Smith",
-      "number": "041123456"
+    { 
+      "id": "3",
+      "name": "Dan Abramov", 
+      "number": "12-43-234345"
     },
-    {
-      "id": "a12a",
-      "name": "John Smith",
-      "number": "123456789"
-    },
-    {
-      "id": "f020",
-      "name": "Jason Statham",
-      "number": "123456787"
+    { 
+      "id": "4",
+      "name": "Mary Poppendieck", 
+      "number": "39-23-6423122"
     }
-  ]
-}
+]

@@ -47,9 +47,10 @@ const App = () => {
     if (window.confirm(`do you want to delete ${person.name}?`)) {
       peopleServices
         .remove(id)
-        .then(person => {
-          const newPeople = persons.filter((p) => p.id !== person.id)
-          setPersons(newPeople)
+        .then(deleted => {
+          if (deleted) {
+            setPersons(persons.filter(p => p.id != id))
+          }
         })
     }
   }
@@ -64,5 +65,5 @@ const App = () => {
     </div>
   )
 }
-
+ 
 export default App

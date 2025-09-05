@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://galileokim451:${password}@cluster0.tbpqlw6.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
+const url = `mongodb+srv://galileokim451:${password}@cluster0.tbpqlw6.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
 
 mongoose.set('strictQuery',false)
 
@@ -21,21 +21,23 @@ const personSchema = new mongoose.Schema({
 
 const Person = mongoose.model('Person', personSchema)
 
+if (!process.argv[3]) {
+  Person.find({}).then(result => {
+    result.forEach(p => {
+      console.log(p)
+    })
+    mongoose.connection.close()
+  })
+
+  return
+}
+
 const person = new Person({
   name: process.argv[3],
   number: process.argv[4],
 })
 
-// person.save().then(result => {
-//   console.log('person saved')
-//   mongoose.connection.close()
-// })
-
-// you can specify search conditions in the object parameter
-
-Person.find({}).then(result => {
-  result.forEach(p => {
-    console.log(p)
-  })
+person.save().then(result => {
+  console.log('person saved')
   mongoose.connection.close()
 })

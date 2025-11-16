@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://galileokim451:${password}@cluster0.tbpqlw6.mongodb.net/phonebookApp?retryWrites=true&w=majority&appName=Cluster0`
+const url = `mongodb+srv://galileokim451:${password}@cluster0.tbpqlw6.mongodb.net/mongos?retryWrites=true&w=majority&appName=Cluster0`
 
 mongoose.set('strictQuery',false)
 
@@ -16,7 +16,7 @@ mongoose.connect(url)
 const personSchema = new mongoose.Schema({
   name: String,
   number: String,
-  // important: Boolean,
+  important: Boolean,
 })
 
 const Person = mongoose.model('Person', personSchema)
@@ -35,6 +35,7 @@ if (!process.argv[3]) {
 const person = new Person({
   name: process.argv[3],
   number: process.argv[4],
+  important: true,
 })
 
 person.save().then(result => {

@@ -2,6 +2,7 @@ require("dotenv").config();
 const Person = require("./models/person");
 const express = require("express");
 const app = express();
+app.use(express.static('dist'))
 var morgan = require("morgan");
 const cors = require("cors");
 
@@ -82,7 +83,7 @@ app.post("/api/persons", async (request, response) => {
 
   person.save().then((savedPerson) => {
     response.json(savedPerson);
-  });
+  }).catch(error => next(error))
 });
 
 const errorHandler = (error, request, response, next) => {
@@ -90,7 +91,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === "CastError") {
     return response.status(400).send({ error: "malformatted id" });
-  }
+  } else if (error.name === 'Validation Error') {
+        return response.status(400).json({ error: error.message })
+    }
 
   next(error);
 };

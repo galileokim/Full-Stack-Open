@@ -34,7 +34,7 @@ app.get('/info', async (request, response) => {
   )
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id)
     .then((person) => {
       if (person) {
@@ -59,7 +59,7 @@ app.delete('/api/persons/:id', async (request, response, next) => {
   //    response.status(204).end()
 })
 
-app.post('/api/persons', async (request, response) => {
+app.post('/api/persons', async (request, response, next) => {
   const body = request.body
 
   if (body.number === '' || body.name === '') {
@@ -92,7 +92,7 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
-  } else if (error.name === 'Validation Error') {
+  } else if (error.name === 'ValidationError') {
     return response.status(400).json({ error: error.message })
   }
 
